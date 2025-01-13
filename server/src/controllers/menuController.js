@@ -1,9 +1,11 @@
 import Menu from "../models/Menu.js";
 
 export const getAllMenuItems = async (req, res, next) => {
+    let success = false;
     try {
         const menuItems = await Menu.find({});
-        res.json(menuItems);
+        success = true;
+        res.json({success, menuItems});
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error'});
@@ -20,7 +22,7 @@ export const CreateMenu = async(req, res, next) => {
         }
 
         //  check if the menu name already exists
-        const menunameAvaliable = Menu.findOne({ name });
+        const menunameAvaliable = await Menu.findOne({ name });
         if (menunameAvaliable) {
             res.status(400).json({ error: 'Menu name already exists'});
             return;
