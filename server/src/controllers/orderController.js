@@ -1,28 +1,36 @@
 import Order from "../models/Order.js";
 
 export const createOrder = async(req, res, next) => {
-    const { userId, items, totalAmount, status} = req.body;
+    const {items, totalAmount} = req.body;
+    const userId = req.userId;
+
+    if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+    }
+    let success = false;
+
+    if (!items || !totalAmount) {
+        res.send({ error: 'require all fileds'})
+        return;
+    };
 
     try {
-        if (!userId || !items || !totalAmount || !status) {
-            res.send({ error: 'require all fileds'})
-            return;
-        };
 
         const newOrder = new Order({
-            userId,
+            userId: userId,
             items,
             totalAmount,
-            status
         });
 
         if (!newOrder) {
-            res.status(404).json({ error: ' not found ' });
+            res.status(404).json({ error: 'not found' });
         }
 
         await newOrder.save();
 
-        res.status(200).json({ message: 'created Order', newOrder});
+        success = true;
+        res.status(201).json({ success, newOrder});
         next();
     } catch (err) {
         console.error(err);
@@ -32,9 +40,22 @@ export const createOrder = async(req, res, next) => {
 };
 
 export const getOrders = async(req, res, next) => {
+    let success = false;
+    const userId = req.userId;
+
+    if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+    }
     try {
-        const orders = await Order.find({});
-        res.json(orders);
+        const orders = await Order.find({ userId });
+
+        if (orders.length === 0) {
+            res.json({ success, message: 'No orders found' });
+        }
+
+        success = true;
+        res.status(200).json({ success, orders});
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error'});
