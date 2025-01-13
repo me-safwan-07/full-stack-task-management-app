@@ -5,9 +5,9 @@ import authMiddleware from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 // POST /api/order/
-router.post('/', authMiddleware, createOrder);
+router.post('/', createOrder);
 
 // GET /api/order/
-router.get('/', authMiddleware, getOrders);
+router.get('/', getOrders);
 
 export default router;
