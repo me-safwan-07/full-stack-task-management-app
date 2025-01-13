@@ -22,11 +22,7 @@ export const createOrder = async(req, res, next) => {
             items,
             totalAmount,
         });
-
-        if (!newOrder) {
-            res.status(404).json({ error: 'not found' });
-        }
-
+        
         await newOrder.save();
 
         success = true;

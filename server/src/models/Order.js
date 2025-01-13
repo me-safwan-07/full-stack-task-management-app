@@ -5,10 +5,10 @@ const OrderSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
+        unique: false,
     },
     items: [
         {
-
             menu: {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'Menu',
