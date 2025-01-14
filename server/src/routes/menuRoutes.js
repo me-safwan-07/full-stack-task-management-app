@@ -5,6 +5,7 @@ import {
     getAllMenuItems, 
     updateMenuById 
 } from "../controllers/menuController.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -12,12 +13,12 @@ const router = Router();
 router.get('/', getAllMenuItems);
 
 // POST /api/menu/
-router.post('/', CreateMenu);
+router.post('/', authMiddleware, CreateMenu);
 
 // PUT /api/menu/:id
-router.put('/:id', updateMenuById);
+router.put('/:id', authMiddleware,  updateMenuById);
 
 // DELETE /api/menu/:id
-router.delete('/:id', deleteMenuById);
+router.delete('/:id', authMiddleware, deleteMenuById);
 
 export default router;
