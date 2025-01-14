@@ -5,7 +5,7 @@ export const getAllMenuItems = async (req, res, next) => {
     try {
         const menuItems = await Menu.find({});
         success = true;
-        res.json({success, menuItems});
+        res.status(200).json({success, menuItems});
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Server error'});
@@ -14,9 +14,9 @@ export const getAllMenuItems = async (req, res, next) => {
 };
 
 export const CreateMenu = async(req, res, next) => {
-    const { name, category, price, availability } = req.body;
+    const { name,image, category, price, availability } = req.body;
     try {
-        if (!name || !category || !price || !availability) {
+        if (!name || !image || !category || !price || !availability) {
             res.status(400).json({ error: 'All fields are required'});
             return;
         }
@@ -30,6 +30,7 @@ export const CreateMenu = async(req, res, next) => {
 
         const newMenu = new Menu({ 
             name,
+            image,
             category,
             price,
             availability
@@ -46,11 +47,11 @@ export const CreateMenu = async(req, res, next) => {
 
 export const updateMenuById = async(req, res, next) => {
     const { id } = req.params;
-    const { name, category, price, availability } = req.body;
+    const { name,image, category, price, availability } = req.body;
     try {
         const updatedMenu = await Menu.findByIdAndUpdate(
             id,
-            { name, category, price, availability},
+            { name, image, category, price, availability},
             { new: true, runValidators: true}
         );
         

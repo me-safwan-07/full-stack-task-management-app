@@ -25,6 +25,12 @@ export const register = async (req, res, next) => {
             return;
         };
 
+        const usernametaken = await User.findOne({ username });
+        if (usernametaken) {
+            res.status(400).json({ error: 'Username already exists' });
+            return;
+        }
+        
         const newUser = new User({ 
             username, 
             email, 
