@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
 
 // Use routes
 app.use(`${BASE_API_URL}/auth`, userRouter);
-app.use(`${BASE_API_URL}/menu`, authMiddleware, menuRouter);
+app.use(`${BASE_API_URL}/menu`, menuRouter);
 app.use(`${BASE_API_URL}/order`, authMiddleware, orderRouter);
 // console.log(`${BASE_API_URL}`)
 // Error handling middleware
